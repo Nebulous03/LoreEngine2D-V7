@@ -3,10 +3,12 @@ package loreEngine.core.graphics;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLUtil;
 
 public class Window {
 	
@@ -56,8 +58,12 @@ public class Window {
 		initOpenGL();
 		
 		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);			//TODO: RETURN TO FALSE!
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+		
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 		
 		long monitor = glfwGetPrimaryMonitor();
 		if(monitor == 0) System.err.println("ERROR! - GLFW failed to find attached monitor!");
@@ -70,6 +76,7 @@ public class Window {
 		
 		switch(display){
 		default:
+			glWindowID = glfwCreateWindow(width, height, title, 0, 0);
 			break;
 		case WINDOWED:
 			glWindowID = glfwCreateWindow(width, height, title, 0, 0);
@@ -87,17 +94,24 @@ public class Window {
 		glfwMakeContextCurrent(glWindowID);
 		GL.createCapabilities();
 		
-		glfwSwapInterval(1);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		glfwSwapInterval(0);
 		glClearColor(0.0f, 0.04f, 0.06f, 1.0f);
 		
 		if(display == DisplayType.WINDOWED)
 			glfwSetWindowPos(glWindowID,(mode.width() - width) / 2,(mode.height() - height) / 2);
 		
-		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+		glfwShowWindow(glWindowID);
+		
+		GLUtil.setupDebugMessageCallback(); // Move / remove?
 	}
 	
 	private void initOpenGL() {
 		if(!glInitialized) {
+			
+			 GLFWErrorCallback.createPrint(System.err).set();
 			
 			if (!GLFW.glfwInit()) {
 				System.err.println("ERROR! - Failed to initialize GLFW!");
@@ -105,16 +119,17 @@ public class Window {
 			} else 
 				System.out.println("SUCCESS! - GLFW initialized successfully!");
 			
-			glfwSetErrorCallback(GLFWErrorCallback.createPrint());
-			
 			glInitialized = true;
 		}
 	}
 	
 	public void update() {
-		glfwPollEvents();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwSwapBuffers(glWindowID);
+		glfwPollEvents();
+	}
+	
+	public void clear() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
 	public Window resize(int width, int height) {
@@ -131,17 +146,17 @@ public class Window {
 	}
 	
 	public Window show() {
-		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+		glfwShowWindow(glWindowID);
 		return this;
 	}
 	
 	public Window hide() {
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+		glfwHideWindow(glWindowID);
 		return this;
 	}
 	
 	public Window focus() {
-		glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
+		glfwFocusWindow(glWindowID);;
 		return this;
 	}
 	
@@ -187,4 +202,17 @@ public class Window {
 	{
 		return glfwGetWindowAttrib(glWindowID, GLFW_FOCUSED) == GLFW_TRUE;
 	}
+	
+	public void printGLStats(){
+        System.out.println(
+        " OPENGL: " + glGetString(GL_VERSION) + "\n" +
+        " LWJGL: " + Version.getVersion() + "\n" + 
+        " GRAPHICS: " + glGetString(GL_RENDERER) + "\n" +
+        " VENDORS: " + glGetString(GL_VENDOR) + "\n" +
+        " OPERATING SYSTEM: " + System.getProperty("os.name") + "\n" +
+        " JAVA VERSION: " + System.getProperty("java.version") + "\n" +
+        " CURRENT DIRECTORY: \n" +
+        " " + System.getProperty("user.dir")
+        );
+    }
 }
