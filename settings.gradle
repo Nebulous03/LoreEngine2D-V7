@@ -1,3 +1,0 @@
-include 'Sandbox'
-
-rootProject.name = 'LoreEngine2D'

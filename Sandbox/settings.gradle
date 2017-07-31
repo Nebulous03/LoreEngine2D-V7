@@ -1,0 +1,4 @@
+rootProject.name = 'Sandbox'
+
+include ':LoreEngine2D-Core'
+project(':LoreEngine2D-Core').projectDir = new File(settingsDir, '../LoreEngine2D-Core')

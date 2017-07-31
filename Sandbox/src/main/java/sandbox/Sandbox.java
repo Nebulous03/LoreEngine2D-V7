@@ -18,7 +18,7 @@ public class Sandbox extends Game {
 
 	@Override
 	public void init() {
-		
+		System.out.println("Test");
 	}
 
 }
