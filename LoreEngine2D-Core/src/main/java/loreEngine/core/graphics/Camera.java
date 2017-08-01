@@ -8,8 +8,8 @@ public class Camera {
 	public static final short CAMERA_ORTOGRAPHIC = 0;
 	public static final short CAMERA_PERSPECTIVE = 1;
 
-	private static float near = 0.001f;
-	private static float far = 1000.0f;
+	private static float near = 0.0001f;
+	private static float far  = 1000.0f;
 	
 	private Matrix4f projection;
 	private short projectionType;

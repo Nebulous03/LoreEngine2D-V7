@@ -1,7 +1,5 @@
 package sandbox;
 
-import java.text.DecimalFormat;
-
 import loreEngine.Info;
 import loreEngine.core.Game;
 import loreEngine.core.graphics.Camera;
@@ -13,8 +11,6 @@ import loreEngine.core.graphics.Shader;
 import loreEngine.core.graphics.Window;
 import loreEngine.core.graphics.renderers.BasicRenderer;
 import loreEngine.math.Vector3f;
-import loreEngine.utils.Log;
-import loreEngine.utils.LogLevel;
 
 public class Sandbox extends Game {
 	
@@ -31,11 +27,11 @@ public class Sandbox extends Game {
 	public void init() {
 		
 		renderer = new BasicRenderer();
-		test = new Renderable(Mesh.Plane(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+		test = new Renderable(Mesh.Plane(), new Vector3f(0, 0, 0f), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 		shader = new Shader("/shaders/default.vs", "/shaders/default.fs");
 		
 		camera = new Camera(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
-		camera.move(new Vector3f(1.0f, 0, -1.0f), 1.0f);
+		camera.move(new Vector3f(0, 0, 1.0f), 1.0f);
 		
 	}
 

@@ -18,8 +18,11 @@ public abstract class Game {
 	}
 	
 	protected Window window;
+	
+	protected boolean fpsCapped = true;
+	
 	protected int tps = 16;
-	protected int fps = 60;
+	protected int fps = 200;
 	
 	public int activeFPS;
 	public double activeMS;
@@ -77,8 +80,6 @@ public abstract class Game {
 		
 		while(true) {
 			
-			window.clear();
-			
 			if(GLFW.glfwWindowShouldClose(window.getGLWindowID())) break;
 			
 			oldTime = newTime;
@@ -106,15 +107,22 @@ public abstract class Game {
 			
 			msStart = Time.getTimeMiliSeconds();
 			
-			render();
+			if(!fpsCapped) {
+				window.clear();
+				render();
+				frames++;				
+			} else {
+				if(frames < fps) {
+					window.clear();
+					render();
+					frames++;	
+				}
+			}
 			
 			msEnd = Time.getTimeMiliSeconds();
 			activeMS = msEnd - msStart;
 			
-			frames++;
-			
 			window.update();
-			
 		}
 		
 		stop();
@@ -142,6 +150,30 @@ public abstract class Game {
 	
 	public double getActiveMS() {
 		return activeMS;
+	}
+	
+	public int getTPSCap() {
+		return tps;
+	}
+	
+	public void setTPS(int tps) {
+		this.tps = tps;
+	}
+	
+	public int getFPSCap() {
+		return fps;
+	}
+	
+	public void fpsCapped(boolean fpsCapped) {
+		this.fpsCapped = fpsCapped;
+	}
+	
+	public boolean isFPSCapped() {
+		return fpsCapped;
+	}
+	
+	public void setFPS(int fps) {
+		this.fps = fps;
 	}
 
 }

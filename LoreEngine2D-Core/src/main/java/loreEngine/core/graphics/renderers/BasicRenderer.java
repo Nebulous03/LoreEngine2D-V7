@@ -1,6 +1,8 @@
 package loreEngine.core.graphics.renderers;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 
 import org.lwjgl.opengl.GL20;
 
@@ -19,7 +21,7 @@ public class BasicRenderer extends Renderer {
 		renderable.getMesh().getIBO().bind();
 		GL20.glEnableVertexAttribArray(0);
 		
-		shader.setUniform("projection", camera.getProjectionMatrix());
+		shader.setUniform("projection", camera.getProjectionMatrix());//Matrix4f.Perspective(90.0f, 16.0f/9.0f, 0.0001f, 1000.0f));
 		shader.setUniform("view", camera.getViewMatrix());
 		shader.setUniform("transform", renderable.getTransformMatrix());
 		
