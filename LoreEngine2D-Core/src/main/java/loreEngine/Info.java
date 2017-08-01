@@ -1,4 +1,4 @@
-package loreEngine.core;
+package loreEngine;
 
 public class Info {
 	

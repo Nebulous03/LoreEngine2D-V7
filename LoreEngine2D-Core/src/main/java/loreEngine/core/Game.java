@@ -2,6 +2,7 @@ package loreEngine.core;
 
 import org.lwjgl.glfw.GLFW;
 
+import loreEngine.Info;
 import loreEngine.core.graphics.DisplayType;
 import loreEngine.core.graphics.Mesh;
 import loreEngine.core.graphics.Renderable;

@@ -21,4 +21,14 @@ public class Sandbox extends Game {
 		
 	}
 
+	@Override
+	public void onStart() {
+		
+	}
+
+	@Override
+	public void onStop() {
+		
+	}
+
 }
