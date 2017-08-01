@@ -18,7 +18,7 @@ public class Mesh {
 		this.vao = new VertexArray();
 		this.vbo = new VertexBuffer(vertices, 3);
 		this.ibo = new IndexBuffer(indices);
-		this.tbo = new VertexBuffer(texCoords, 3);
+		this.tbo = new VertexBuffer(texCoords, 2);
 		
 		vao.attach(vbo);
 		vao.attach(tbo);
@@ -63,12 +63,10 @@ public class Mesh {
 		
 		float[] texCoords = new float[] 
 		{
-				-0.5f,  0.5f, 0.0f,
-		        -0.5f, -0.5f, 0.0f,
-		         0.5f,  0.5f, 0.0f,
-		         0.5f,  0.5f, 0.0f,
-		        -0.5f, -0.5f, 0.0f,
-		         0.5f, -0.5f, 0.0f
+				-0.5f,  0.5f,
+			    -0.5f, -0.5f,
+			     0.5f, -0.5f,
+			     0.5f,  0.5f
 		};
 		
 		return new Mesh(vertices, indices, texCoords);

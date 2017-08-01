@@ -6,7 +6,7 @@ import loreEngine.utils.Console;
 public class Info {
 	
 	public static final String NAME    = "LORE ENGINE";
-	public static final String VERSION = "v0.3.2";
+	public static final String VERSION = "v0.3.3";
 
 	public static final void printOpener(Game game) {
 		Console.printRaw
