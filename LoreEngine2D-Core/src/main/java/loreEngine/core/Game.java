@@ -3,78 +3,115 @@ package loreEngine.core;
 import org.lwjgl.glfw.GLFW;
 
 import loreEngine.Info;
-import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.DisplayType;
-import loreEngine.core.graphics.Mesh;
-import loreEngine.core.graphics.Renderable;
-import loreEngine.core.graphics.Renderer;
-import loreEngine.core.graphics.Shader;
 import loreEngine.core.graphics.Window;
-import loreEngine.core.graphics.renderers.BasicRenderer;
-import loreEngine.math.Vector3f;
-import loreEngine.utils.Console;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
+import loreEngine.utils.Time;
 
 public abstract class Game {
 	
+	public enum GameStatus {
+		RUNNING,
+		PAUSED,
+		STOPPED
+	}
+	
 	protected Window window;
-	protected double tps;
+	protected int tps = 16;
+	protected int fps = 60;
+	
+	public int activeFPS;
+	public double activeMS;
+	
+	protected GameStatus status;
 	
 	public Game() {
 		this.window = Window.createWindow("LoreEngine2D - Test", 640, 480, DisplayType.WINDOWED, true);
+		Info.printOpener(this);
 	}
 	
 	public Game(Window window) {
 		this.window = window;
+		Info.printOpener(this);
 	}
 
 	public void start() {
+		Log.logln(LogLevel.INFO, "Game is initializing...");
 		init();
+		Log.logln(LogLevel.INFO, "Game is starting...");
 		onStart();
+		Log.logln(LogLevel.INFO, "Game is running...");
 		run();
 	}
 	
 	public void stop() {
+		Log.logln(LogLevel.INFO, "Game is stopping...");
 		onStop();
 		GLFW.glfwTerminate();
+		Log.logln(LogLevel.INFO, "Game has stopped.");
 		System.exit(0);
 	}
 
 	private void run() {
 		
-		Console.printRaw
-		(
-			"------------------------------------------------\n" +
-			"  MADE IN LORE ENGINE " + Info.VERSION + "\n" +
-			"  COPYWRITE BEN RATCLIFF (NEBULOUSDEV) 2017" + "\n" +
-			"  UNDER THE APACHE 2.0 LICENCE" + "\n" +
-			"------------------------------------------------\n"
-		);
+		status = GameStatus.RUNNING;
 		
-		window.printGLStats();
+		double oldTime = 0.0;
+		double newTime = 0.0;
+		double delta   = 0.0;
 		
-		Console.printRaw
-		(
-			"------------------------------------------------\n"
-		);
+		double startTime = Time.getTimeNanoSeconds();
 		
-		Log.log(LogLevel.INFO, "This is a logged error!");
+		double frameTime  = 0.0;
+		double tickTime = 0.0;
 		
-		Renderer renderer = new BasicRenderer();
-		Renderable test = new Renderable(Mesh.Plane(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-		Shader shader = new Shader("/shaders/default.vs", "/shaders/default.fs");
+		double msStart = 0.0;
+		double msEnd   = 0.0;
 		
-		Camera camera = new Camera(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
-		camera.move(new Vector3f(1.0f, 0, -1.0f), 1.0f);
-
+		int frames = 0;
+		int tick = 0;
+		
+		double elapsedTick = 0.0;
+		double elapsedFrame = 0.0;
+		
 		while(true) {
 			
 			window.clear();
 			
 			if(GLFW.glfwWindowShouldClose(window.getGLWindowID())) break;
 			
-			renderer.render(test, camera, shader);
+			oldTime = newTime;
+			newTime = Time.getTimeNanoSeconds();
+			delta	= newTime - oldTime;
+			
+			elapsedFrame = ((newTime - startTime) / 1000000000) - frameTime;
+			
+			if(elapsedFrame > 1.0) {
+				frameTime += 1.0;
+				activeFPS = (int)frames;
+				frames = 0;
+			}
+			
+			elapsedTick = ((newTime - startTime) / 1000000000) - tickTime;
+			
+			if(elapsedTick > 1.0 / (double)tps) {
+				tickTime += 1.0 / (double)tps;
+				tick++;
+				tick(tick, tps);
+				if(tick >= tps) tick = 0;
+			}
+			
+			update(delta);
+			
+			msStart = Time.getTimeMiliSeconds();
+			
+			render();
+			
+			msEnd = Time.getTimeMiliSeconds();
+			activeMS = msEnd - msStart;
+			
+			frames++;
 			
 			window.update();
 			
@@ -87,6 +124,24 @@ public abstract class Game {
 	
 	public abstract void onStart();
 	
+	public abstract void update(double delta);
+	
+	public abstract void tick(int tick, int tock);
+	
 	public abstract void onStop();
+	
+	public abstract void render();
+	
+	public Window getWindow() {
+		return window;
+	}
+	
+	public int getActiveFPS() {
+		return activeFPS;
+	}
+	
+	public double getActiveMS() {
+		return activeMS;
+	}
 
 }
