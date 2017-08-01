@@ -50,6 +50,29 @@ public class Matrix4f {
 		return this;
 	}
 	
+	public static Matrix4f Perspective(float fov, float aspect, float near, float far) {
+			Matrix4f m = new Matrix4f();
+			float q = (float) (1.0f / tan(toRadians(0.5f * fov)));
+			float w = q / aspect;
+			m.elements[0 + 0 * 4] = w;
+			m.elements[1 + 1 * 4] = q;
+			m.elements[2 + 2 * 4] = (near + far) / (near - far);
+			m.elements[2 + 3 * 4] = (2.0f * near * far) / (near - far);
+			m.elements[3 + 2 * 4] = -1.0f;
+			return m;
+	}
+
+	public static Matrix4f Orthographic(float left, float right, float bottom, float top, float near, float far) {
+		Matrix4f m = new Matrix4f();
+		m.elements[0 + 0 * 4] = 2.0f / (right - left);
+		m.elements[1 + 1 * 4] = 2.0f / (top - bottom);
+		m.elements[2 + 2 * 4] = -2.0f / (far - near);
+		m.elements[0 + 3 * 4] = -(left + right) / (left - right);
+		m.elements[1 + 3 * 4] = -(bottom + top) / (bottom - top);
+		m.elements[2 + 3 * 4] = -(far + near) / (far - near);
+		m.elements[3 + 3 * 4] = 1.0f;
+		return m;
+	}
 	
 	public static Matrix4f Identity() {
 		

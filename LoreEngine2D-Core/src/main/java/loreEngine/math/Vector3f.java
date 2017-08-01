@@ -12,6 +12,8 @@ public class Vector3f {
 		this.z = z;
 	}
 	
+	/* ADD */
+	
 	public Vector3f add(Vector3f other) {
 		this.x += other.x;
 		this.y += other.y;
@@ -26,6 +28,52 @@ public class Vector3f {
 		return this;
 	}
 	
+	public Vector3f add(float other) {
+		this.x += other;
+		this.y += other;
+		this.z += other;
+		return this;
+	}
+	
+	public Vector3f add(float other, Vector3f dest) {
+		dest.x += other;
+		dest.y += other;
+		dest.z += other;
+		return this;
+	}
+	
+	/* SUBTRACT */
+	
+	public Vector3f sub(Vector3f other) {
+		this.x -= other.x;
+		this.y -= other.y;
+		this.z -= other.z;
+		return this;
+	}
+	
+	public Vector3f sub(Vector3f other, Vector3f dest) {
+		dest.x -= other.x;
+		dest.y -= other.y;
+		dest.z -= other.z;
+		return this;
+	}
+	
+	public Vector3f sub(float other) {
+		this.x -= other;
+		this.y -= other;
+		this.z -= other;
+		return this;
+	}
+	
+	public Vector3f sub(float other, Vector3f dest) {
+		dest.x -= other;
+		dest.y -= other;
+		dest.z -= other;
+		return this;
+	}
+	
+	/* MULTIPLY */
+	
 	public Vector3f mul(Vector3f other) {
 		this.x *= other.x;
 		this.y *= other.y;
@@ -37,6 +85,50 @@ public class Vector3f {
 		dest.x *= other.x;
 		dest.y *= other.y;
 		dest.z *= other.z;
+		return this;
+	}
+	
+	public Vector3f mul(float other) {
+		this.x *= other;
+		this.y *= other;
+		this.z *= other;
+		return this;
+	}
+	
+	public Vector3f mul(float other, Vector3f dest) {
+		dest.x *= other;
+		dest.y *= other;
+		dest.z *= other;
+		return this;
+	}
+	
+	/* DIVIDE */
+	
+	public Vector3f div(Vector3f other) {
+		this.x /= other.x;
+		this.y /= other.y;
+		this.z /= other.z;
+		return this;
+	}
+	
+	public Vector3f div(Vector3f other, Vector3f dest) {
+		dest.x /= other.x;
+		dest.y /= other.y;
+		dest.z /= other.z;
+		return this;
+	}
+	
+	public Vector3f div(float other) {
+		this.x /= other;
+		this.y /= other;
+		this.z /= other;
+		return this;
+	}
+	
+	public Vector3f div(float other, Vector3f dest) {
+		dest.x *= other;
+		dest.y *= other;
+		dest.z *= other;
 		return this;
 	}
 

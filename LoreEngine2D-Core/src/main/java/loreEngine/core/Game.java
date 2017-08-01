@@ -3,6 +3,7 @@ package loreEngine.core;
 import org.lwjgl.glfw.GLFW;
 
 import loreEngine.Info;
+import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.DisplayType;
 import loreEngine.core.graphics.Mesh;
 import loreEngine.core.graphics.Renderable;
@@ -63,6 +64,9 @@ public abstract class Game {
 		Renderer renderer = new BasicRenderer();
 		Renderable test = new Renderable(Mesh.Plane(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 		Shader shader = new Shader("/shaders/default.vs", "/shaders/default.fs");
+		
+		Camera camera = new Camera(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
+		camera.move(new Vector3f(1.0f, 0, -1.0f), 1.0f);
 
 		while(true) {
 			
@@ -70,7 +74,7 @@ public abstract class Game {
 			
 			if(GLFW.glfwWindowShouldClose(window.getGLWindowID())) break;
 			
-			renderer.render(test, null, shader);
+			renderer.render(test, camera, shader);
 			
 			window.update();
 			

@@ -18,7 +18,7 @@ public class Renderable {
 		this.scale = Matrix4f.Scale(scale);
 	}
 	
-	public Matrix4f getTransform() {
+	public Matrix4f getTransformMatrix() {
 		return Matrix4f.Identity().mul(rotation).mul(scale).mul(translation);
 	}
 

@@ -8,7 +8,6 @@ import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.Renderable;
 import loreEngine.core.graphics.Renderer;
 import loreEngine.core.graphics.Shader;
-import loreEngine.math.Matrix4f;
 
 public class BasicRenderer extends Renderer {
 
@@ -20,9 +19,9 @@ public class BasicRenderer extends Renderer {
 		renderable.getMesh().getIBO().bind();
 		GL20.glEnableVertexAttribArray(0);
 		
-		shader.setUniform("projection", Matrix4f.Identity());
-		shader.setUniform("view", Matrix4f.Identity());
-		shader.setUniform("transform", renderable.getTransform());
+		shader.setUniform("projection", camera.getProjectionMatrix());
+		shader.setUniform("view", camera.getViewMatrix());
+		shader.setUniform("transform", renderable.getTransformMatrix());
 		
 		glDrawElements(GL_TRIANGLES, renderable.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 		

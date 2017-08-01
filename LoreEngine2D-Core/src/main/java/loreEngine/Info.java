@@ -2,6 +2,6 @@ package loreEngine;
 
 public class Info {
 	
-	public static final String VERSION = "v0.2.1";
+	public static final String VERSION = "v0.2.2";
 
 }
