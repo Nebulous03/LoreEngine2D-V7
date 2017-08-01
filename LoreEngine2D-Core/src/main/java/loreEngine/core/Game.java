@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import loreEngine.Info;
 import loreEngine.core.graphics.DisplayType;
 import loreEngine.core.graphics.Window;
+import loreEngine.core.logic.Input;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 import loreEngine.utils.Time;
@@ -19,9 +20,9 @@ public abstract class Game {
 	
 	protected Window window;
 	
-	protected boolean fpsCapped = true;
+	protected boolean fpsCapped = false;
 	
-	protected int tps = 16;
+	protected int tps = 1;
 	protected int fps = 200;
 	
 	public int activeFPS;
@@ -41,6 +42,7 @@ public abstract class Game {
 
 	public void start() {
 		Log.logln(LogLevel.INFO, "Game is initializing...");
+		Input.init(getWindow());
 		init();
 		Log.logln(LogLevel.INFO, "Game is starting...");
 		onStart();
@@ -84,9 +86,9 @@ public abstract class Game {
 			
 			oldTime = newTime;
 			newTime = Time.getTimeNanoSeconds();
-			delta	= newTime - oldTime;
+			delta	= (newTime - oldTime) / 1000000000.0;
 			
-			elapsedFrame = ((newTime - startTime) / 1000000000) - frameTime;
+			elapsedFrame = ((newTime - startTime) / 1000000000.0) - frameTime;
 			
 			if(elapsedFrame > 1.0) {
 				frameTime += 1.0;
@@ -94,7 +96,7 @@ public abstract class Game {
 				frames = 0;
 			}
 			
-			elapsedTick = ((newTime - startTime) / 1000000000) - tickTime;
+			elapsedTick = ((newTime - startTime) / 1000000000.0) - tickTime;
 			
 			if(elapsedTick > 1.0 / (double)tps) {
 				tickTime += 1.0 / (double)tps;
@@ -103,7 +105,8 @@ public abstract class Game {
 				if(tick >= tps) tick = 0;
 			}
 			
-			update(delta);
+			update((float)delta);
+			Input.update();
 			
 			msStart = Time.getTimeMiliSeconds();
 			
@@ -132,7 +135,7 @@ public abstract class Game {
 	
 	public abstract void onStart();
 	
-	public abstract void update(double delta);
+	public abstract void update(float delta);
 	
 	public abstract void tick(int tick, int tock);
 	

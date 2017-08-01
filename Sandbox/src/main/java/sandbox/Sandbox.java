@@ -1,5 +1,7 @@
 package sandbox;
 
+import java.text.DecimalFormat;
+
 import loreEngine.Info;
 import loreEngine.core.Game;
 import loreEngine.core.graphics.Camera;
@@ -10,6 +12,7 @@ import loreEngine.core.graphics.Renderer;
 import loreEngine.core.graphics.Shader;
 import loreEngine.core.graphics.Window;
 import loreEngine.core.graphics.renderers.BasicRenderer;
+import loreEngine.core.logic.Input;
 import loreEngine.math.Vector3f;
 
 public class Sandbox extends Game {
@@ -41,17 +44,29 @@ public class Sandbox extends Game {
 	}
 	
 	@Override
-	public void update(double delta) {
+	public void update(float delta) {
+		if(Input.isKeyHeld(Input.KEY_W)) {
+			camera.move(new Vector3f(0, 1, 0), 1.0f * delta);
+		}
 		
+		if(Input.isKeyHeld(Input.KEY_S)) {
+			camera.move(new Vector3f(0, -1, 0), 1.0f * delta);
+		}
+		
+		if(Input.isKeyHeld(Input.KEY_A)) {
+			camera.move(new Vector3f(-1, 0, 0), 1.0f * delta);
+		}
+		
+		if(Input.isKeyHeld(Input.KEY_D)) {
+			camera.move(new Vector3f(1, 0, 0), 1.0f * delta);
+		}
 	}
+	
+	DecimalFormat df = new DecimalFormat("0.000"); 
 	
 	@Override
 	public void tick(int tick, int tock) {
-		window.setTitle("Sandbox - LoreEngine " + Info.VERSION + " | FPS: " + getActiveFPS());
-		if(tick == tock){
-			//DecimalFormat df = new DecimalFormat("0.000"); 
-			//Log.logln(LogLevel.DEBUG, getActiveFPS() + "FPS, " + df.format(getActiveMS()) + "MS");
-		}
+		window.setTitle("Sandbox - LoreEngine " + Info.VERSION + " | FPS: " + getActiveFPS()+ " | MS: " + df.format(getActiveMS()));
 	}
 
 	@Override
