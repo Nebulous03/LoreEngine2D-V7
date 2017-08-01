@@ -8,7 +8,10 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GLUtil;
+
+import loreEngine.utils.Console;
+import loreEngine.utils.Log;
+import loreEngine.utils.LogLevel;
 
 public class Window {
 	
@@ -66,7 +69,7 @@ public class Window {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 		
 		long monitor = glfwGetPrimaryMonitor();
-		if(monitor == 0) System.err.println("ERROR! - GLFW failed to find attached monitor!");
+		if(monitor == 0) Log.logln(LogLevel.ERROR, "ERROR! - GLFW failed to find attached monitor!");
 		
 		GLFWVidMode mode = glfwGetVideoMode(monitor);
 		glfwWindowHint(GLFW_RED_BITS, mode.redBits());
@@ -94,6 +97,8 @@ public class Window {
 		glfwMakeContextCurrent(glWindowID);
 		GL.createCapabilities();
 		
+		Log.logln(LogLevel.INFO, "SUCCESS! - GL context created successfully!");
+		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
@@ -105,7 +110,9 @@ public class Window {
 		
 		glfwShowWindow(glWindowID);
 		
-		GLUtil.setupDebugMessageCallback(); // Move / remove?
+		Log.logln(LogLevel.INFO, "SUCCESS! - Window initialized successfully!");
+		
+		//GLUtil.setupDebugMessageCallback(); // Move / remove?
 	}
 	
 	private void initOpenGL() {
@@ -114,10 +121,10 @@ public class Window {
 			 GLFWErrorCallback.createPrint(System.err).set();
 			
 			if (!GLFW.glfwInit()) {
-				System.err.println("ERROR! - Failed to initialize GLFW!");
+				Log.logln(LogLevel.ERROR, "ERROR! - Failed to initialize GLFW!");
 				System.exit(1);
 			} else 
-				System.out.println("SUCCESS! - GLFW initialized successfully!");
+				Log.logln(LogLevel.INFO, "SUCCESS! - GLFW initialized successfully!");
 			
 			glInitialized = true;
 		}
@@ -204,7 +211,7 @@ public class Window {
 	}
 	
 	public void printGLStats(){
-        System.out.println(
+        Console.printRaw(
         " OPENGL: " + glGetString(GL_VERSION) + "\n" +
         " LWJGL: " + Version.getVersion() + "\n" + 
         " GRAPHICS: " + glGetString(GL_RENDERER) + "\n" +
@@ -212,7 +219,7 @@ public class Window {
         " OPERATING SYSTEM: " + System.getProperty("os.name") + "\n" +
         " JAVA VERSION: " + System.getProperty("java.version") + "\n" +
         " CURRENT DIRECTORY: \n" +
-        " " + System.getProperty("user.dir")
+        " " + System.getProperty("user.dir") + "\n"
         );
     }
 }
