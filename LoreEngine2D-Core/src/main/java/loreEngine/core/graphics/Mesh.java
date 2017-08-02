@@ -75,10 +75,10 @@ public class Mesh {
 		
 		float[] colors = new float[]
 		{
-				1.0f,  0.0f, 0.0f, 1.0f,
-				1.0f,  0.0f, 1.0f, 1.0f,
-				1.0f,  1.0f, 0.0f, 1.0f,
-				0.0f,  1.0f, 1.0f, 1.0f
+				1.0f,  1.0f, 1.0f, 1.0f,
+				1.0f,  1.0f, 1.0f, 1.0f,
+				1.0f,  1.0f, 1.0f, 1.0f,
+				1.0f,  1.0f, 1.0f, 1.0f
 		};
 		
 		int[] indices = new int[]

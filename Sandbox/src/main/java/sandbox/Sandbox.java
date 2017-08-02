@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 
 import loreEngine.Info;
 import loreEngine.addons.text.Font;
+import loreEngine.addons.text.Text;
 import loreEngine.core.Game;
 import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.DisplayType;
@@ -16,6 +17,7 @@ import loreEngine.core.graphics.Texture.Filter;
 import loreEngine.core.graphics.Texture.Wrap;
 import loreEngine.core.graphics.Window;
 import loreEngine.core.graphics.renderers.BasicRenderer;
+import loreEngine.core.graphics.renderers.TextRenderer;
 import loreEngine.core.graphics.renderers.BasicBatchRenderer;
 import loreEngine.core.logic.Input;
 import loreEngine.math.Matrix4f;
@@ -28,12 +30,18 @@ public class Sandbox extends Game {
 	
 	private BasicRenderer basicRenderer;
 	private BasicBatchRenderer batchRenderer;
+	private TextRenderer textRenderer;
 	private Texture texture;
 	private Renderable test;
 	private Shader shader;
 	private Camera camera;
+	private Camera guiCamera;
 	
-	private final int BATCH_GRID = 32;
+	private Font arial;
+	private Font comicSans;
+	private Text text;
+	
+	private final int BATCH_GRID = 16;
 	
 	public Sandbox(Window window) {
 		super(window);
@@ -45,16 +53,22 @@ public class Sandbox extends Game {
 		Log.setGlobalLogLevel(LogLevel.INFO);
 		
 		shader = new Shader("/shaders/default.vs", "/shaders/default.fs");
-		camera = new Camera(new Vector3f(0, 0, 1.0f), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
+		camera = new Camera(new Vector3f(0, 0, 2.0f), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
+		guiCamera = new Camera(new Vector3f(0, 0, 1), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
 		//camera = new Camera(new Vector3f(150.0f, 50.0f, 50.0f), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
 		
-		texture = new Texture("/textures/crate.png", Wrap.REPEAT, Filter.NEAREST);
+		texture = new Texture("/textures/unknown.png", Wrap.REPEAT, Filter.NEAREST);
 		test = new Renderable(Mesh.Plane(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), texture, Color.CYAN);
+		arial = new Font("/fonts/Arial.fnt", "/fonts/Arial.png");
+		comicSans = new Font("/fonts/ComicSansMS.fnt", "/fonts/ComicSansMS.png");
 
 		basicRenderer = new BasicRenderer();
 		batchRenderer = new BasicBatchRenderer(texture, camera, shader);
+		textRenderer = new TextRenderer(guiCamera, shader);
 		
-		Font arial = new Font("/fonts/arial.fnt", "/fonts/arial.png");
+		text = (Text)new Text(comicSans, 32, new Vector3f(0, 0, 0), Color.WHITE, "FPS: " + getActiveFPS())
+				.setScale(Matrix4f.Scale(new Vector3f(0.05f, 0.05f, 1.0f)))
+				.setTranslation(Matrix4f.Translation(new Vector3f(-32, 18, 0)));
 		
 	}
 
@@ -89,7 +103,7 @@ public class Sandbox extends Game {
 	@Override
 	public void tick(int tick, int tock) {
 		window.setTitle("Sandbox - LoreEngine " + Info.VERSION + " | FPS: " + getActiveFPS()+ " | MS: " + df.format(getActiveMS()));
-		Log.logln(LogLevel.INFO, "Rendering " + BATCH_GRID * BATCH_GRID + " entities.");
+		text.setText("FPS: " + getActiveFPS());
 	}
 
 	@Override
@@ -135,6 +149,7 @@ public class Sandbox extends Game {
 			
 		}
 		
+		textRenderer.render(text);
 		
 	}
 	

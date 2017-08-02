@@ -13,6 +13,7 @@ import loreEngine.utils.LogLevel;
 public class Font {
 	
 	private String name;
+	private int size;
 	private int lineHeight;
 	private int base;
 	private int scaleW;
@@ -23,7 +24,7 @@ public class Font {
 	private HashMap<Short, Glyph> glyphs;
 	
 	public Font(String fontFile, String fontImageFile) {
-		glyphs = loadGliphs(fontFile);
+		this.glyphs = loadGliphs(fontFile);
 		this.texture = new Texture(fontImageFile);
 		Log.logln(LogLevel.INFO, "Font succesfully created: " + fontFile);
 	}
@@ -40,6 +41,7 @@ public class Font {
 		String[] lines = fileString.split("\n");
 		
 		name 		= 				   lines[0].split("\\s+")[1].split("=")[1];
+		//size		= Integer.parseInt(lines[0].split("\\s+")[2].split("=")[1]);
 		lineHeight	= Integer.parseInt(lines[1].split("\\s+")[1].split("=")[1]);
 		base		= Integer.parseInt(lines[1].split("\\s+")[2].split("=")[1]);
 		scaleW		= Integer.parseInt(lines[1].split("\\s+")[3].split("=")[1]);
@@ -67,6 +69,8 @@ public class Font {
 			glyphs.put((short)glyph.id, glyph);
 			
 		}
+		
+		if(kerningStart == 0) return glyphs;
 		
 		for(int i = kerningStart; i < lines.length - headerSize; i++) {
 			
@@ -128,6 +132,10 @@ public class Font {
 
 	public HashMap<Short, Glyph> getGlyphs() {
 		return glyphs;
+	}
+
+	public int getSize() {
+		return size;
 	}
 
 }

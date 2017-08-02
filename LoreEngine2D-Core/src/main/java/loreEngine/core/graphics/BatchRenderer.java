@@ -31,6 +31,8 @@ public abstract class BatchRenderer extends Renderer{
 	
 	protected boolean drawing;
 	
+	protected BatchRenderer() {}
+	
 	public BatchRenderer(Texture batchTexture, Camera camera, Shader shader) {
 		super(camera, shader);
 		this.batchTexture = batchTexture;
