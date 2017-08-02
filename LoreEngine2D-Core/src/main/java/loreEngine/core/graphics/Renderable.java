@@ -1,25 +1,29 @@
 package loreEngine.core.graphics;
 
+import java.awt.Color;
+
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;
 
 public class Renderable {
 	
-	private Mesh mesh;
-	private Texture texture;
+	protected Mesh mesh;
+	protected Texture texture;
+	protected Color color;
 	
-	private Matrix4f translation;
-	private Matrix4f rotation;
-	private Matrix4f scale;
+	protected Matrix4f translation;
+	protected Matrix4f rotation;
+	protected Matrix4f scale;
 	
 	protected Renderable() {}
 	
-	public Renderable(Mesh mesh, Vector3f pos, Vector3f rot, Vector3f scale, Texture texture) {
+	public Renderable(Mesh mesh, Vector3f pos, Vector3f rot, Vector3f scale, Texture texture, Color color) {
 		this.mesh = mesh;
 		this.translation = Matrix4f.Translation(pos);
 		this.rotation = Matrix4f.Rotation(rot);
 		this.scale = Matrix4f.Scale(scale);
 		this.texture = texture;
+		this.color = color;
 	}
 	
 	public Matrix4f getTransformMatrix() {
@@ -37,13 +41,36 @@ public class Renderable {
 	public Matrix4f getTranslation() {
 		return translation;
 	}
+	
+	public Renderable setTranslation(Matrix4f translation) {
+		this.translation = translation;
+		return this;
+	}
 
 	public Matrix4f getRotation() {
 		return rotation;
 	}
+	
+	public Renderable setRotation(Matrix4f rotation) {
+		this.rotation = rotation;
+		return this;
+	}
 
 	public Matrix4f getScale() {
 		return scale;
+	}
+	
+	public Renderable setScale(Matrix4f scale) {
+		this.scale = scale;
+		return this;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }

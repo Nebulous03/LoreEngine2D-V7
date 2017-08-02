@@ -10,17 +10,25 @@ import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.Renderable;
 import loreEngine.core.graphics.Renderer;
 import loreEngine.core.graphics.Shader;
+import loreEngine.utils.Log;
+import loreEngine.utils.LogLevel;
 
 public class BasicRenderer extends Renderer {
 
-	@Override
 	public void render(Renderable renderable, Camera camera, Shader shader) {
-		shader.bind();
+		
+		if(renderable.getMesh() == null){
+			Log.logln(LogLevel.DEBUG, "Renderable was passed into renderer with null mesh");
+			return;
+		}
+		
+		shader.bind();		
 		
 		renderable.getMesh().getVAO().bind();
 		renderable.getMesh().getIBO().bind();
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
+		GL20.glEnableVertexAttribArray(2);
 		
 		shader.setUniform("projection", camera.getProjectionMatrix());
 		shader.setUniform("view", camera.getViewMatrix());
@@ -32,6 +40,7 @@ public class BasicRenderer extends Renderer {
 		
 		renderable.getTexture().unbind();
 		
+		GL20.glDisableVertexAttribArray(2);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(0);
 		renderable.getMesh().getIBO().unbind();

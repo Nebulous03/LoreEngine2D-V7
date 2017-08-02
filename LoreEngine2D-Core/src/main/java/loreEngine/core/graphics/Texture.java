@@ -142,5 +142,13 @@ public class Texture {
 	public int getTextureID() {
 		return textureID;
 	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
 	
 }

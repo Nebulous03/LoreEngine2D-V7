@@ -2,6 +2,18 @@ package loreEngine.core.graphics;
 
 public abstract class Renderer {
 	
-	public abstract void render(Renderable renderable, Camera camera, Shader shader);
+	protected Camera camera;
+	protected Shader shader;
+	
+	protected Renderer() {}
+	
+	public Renderer(Camera camera, Shader shader) {
+		init(camera, shader);
+	}
+	
+	public void init(Camera camera, Shader shader) {
+		this.camera = camera;
+		this.shader = shader;
+	}
 
 }

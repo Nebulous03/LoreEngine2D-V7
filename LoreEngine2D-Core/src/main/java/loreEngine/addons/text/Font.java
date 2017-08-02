@@ -25,6 +25,7 @@ public class Font {
 	public Font(String fontFile, String fontImageFile) {
 		glyphs = loadGliphs(fontFile);
 		this.texture = new Texture(fontImageFile);
+		Log.logln(LogLevel.INFO, "Font succesfully created: " + fontFile);
 	}
 	
 	private HashMap<Short, Glyph> loadGliphs(String fontFile) {

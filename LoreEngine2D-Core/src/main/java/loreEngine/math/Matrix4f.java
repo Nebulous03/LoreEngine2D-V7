@@ -4,6 +4,8 @@ import static java.lang.Math.*;
 
 public class Matrix4f {
 	
+	private static final int SIZE = 16 * Float.BYTES;
+	
 	private float[] elements;
 	
 	public Matrix4f() {
@@ -138,6 +140,20 @@ public class Matrix4f {
 
 	public float[] getElements() {
 		return elements;
+	}
+	
+	public Vector3f getPosVec3f() {
+		return new Vector3f(elements[0 + 3 * 4], elements[1 + 3 * 4], elements[2 + 3 * 4]);
+	}
+
+	public Vector3f getRotVec3f() {
+		return new Vector3f(elements[0 + 3 * 4], elements[1 + 3 * 4], elements[2 + 3 * 4]); // WRONG!!!
+	}
+	
+	/* OTHER */
+	
+	public static int getSize() {
+		return SIZE;
 	}
 	
 }
