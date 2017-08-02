@@ -1,8 +1,4 @@
-package loreEngine.core.graphics;
-
-import loreEngine.core.graphics.vertex.IndexBuffer;
-import loreEngine.core.graphics.vertex.VertexBuffer;
-import loreEngine.core.graphics.vertex.VertexArray;
+package loreEngine.core.graphics.vertex;
 
 public class Mesh {
 	

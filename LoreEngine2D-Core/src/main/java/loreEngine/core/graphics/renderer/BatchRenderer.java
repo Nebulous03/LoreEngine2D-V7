@@ -1,4 +1,4 @@
-package loreEngine.core.graphics;
+package loreEngine.core.graphics.renderer;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
@@ -17,6 +17,10 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.system.MemoryUtil;
+
+import loreEngine.core.graphics.camera.Camera;
+import loreEngine.core.graphics.shader.Shader;
+import loreEngine.core.graphics.texture.Texture;
 
 public abstract class BatchRenderer extends Renderer{
 

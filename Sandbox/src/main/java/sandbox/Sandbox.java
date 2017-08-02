@@ -4,21 +4,21 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 
 import loreEngine.Info;
-import loreEngine.addons.text.Font;
-import loreEngine.addons.text.Text;
+import loreEngine.addons.gui.text.Font;
+import loreEngine.addons.gui.text.Text;
+import loreEngine.addons.gui.text.TextRenderer;
 import loreEngine.core.Game;
-import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.DisplayType;
-import loreEngine.core.graphics.Mesh;
-import loreEngine.core.graphics.Renderable;
-import loreEngine.core.graphics.Shader;
-import loreEngine.core.graphics.Texture;
-import loreEngine.core.graphics.Texture.Filter;
-import loreEngine.core.graphics.Texture.Wrap;
 import loreEngine.core.graphics.Window;
-import loreEngine.core.graphics.renderers.BasicRenderer;
-import loreEngine.core.graphics.renderers.TextRenderer;
-import loreEngine.core.graphics.renderers.BasicBatchRenderer;
+import loreEngine.core.graphics.camera.Camera;
+import loreEngine.core.graphics.renderer.BasicBatchRenderer;
+import loreEngine.core.graphics.renderer.BasicRenderer;
+import loreEngine.core.graphics.renderer.Renderable;
+import loreEngine.core.graphics.shader.Shader;
+import loreEngine.core.graphics.texture.Texture;
+import loreEngine.core.graphics.texture.Texture.Filter;
+import loreEngine.core.graphics.texture.Texture.Wrap;
+import loreEngine.core.graphics.vertex.Mesh;
 import loreEngine.core.logic.Input;
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;
@@ -156,6 +156,7 @@ public class Sandbox extends Game {
 	public static void main(String[] args) {
 		//Window window = Window.createWindow("LoreEngine2D - Test", 1024, 720, DisplayType.WINDOWED);
 		Window window = Window.createWindow("LoreEngine2D - Test", 1920, 1080, DisplayType.WINDOWED);
+		//Window window = Window.createWindow("LoreEngine2D - Test", 2560, 1440, DisplayType.FULLSCREEN);
 		Game game = new Sandbox(window);
 		game.start();
 	}

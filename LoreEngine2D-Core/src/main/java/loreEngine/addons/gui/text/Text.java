@@ -1,9 +1,9 @@
-package loreEngine.addons.text;
+package loreEngine.addons.gui.text;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
-import loreEngine.core.graphics.Renderable;
+import loreEngine.core.graphics.renderer.Renderable;
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;
 

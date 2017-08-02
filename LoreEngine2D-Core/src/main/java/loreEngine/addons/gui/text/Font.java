@@ -1,12 +1,12 @@
-package loreEngine.addons.text;
+package loreEngine.addons.gui.text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
-import loreEngine.core.graphics.Shader;
-import loreEngine.core.graphics.Texture;
+import loreEngine.core.graphics.shader.Shader;
+import loreEngine.core.graphics.texture.Texture;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 

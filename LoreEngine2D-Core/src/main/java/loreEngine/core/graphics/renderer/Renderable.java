@@ -1,7 +1,9 @@
-package loreEngine.core.graphics;
+package loreEngine.core.graphics.renderer;
 
 import java.awt.Color;
 
+import loreEngine.core.graphics.texture.Texture;
+import loreEngine.core.graphics.vertex.Mesh;
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;
 

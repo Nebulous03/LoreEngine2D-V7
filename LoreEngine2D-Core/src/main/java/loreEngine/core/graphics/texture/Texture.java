@@ -1,4 +1,4 @@
-package loreEngine.core.graphics;
+package loreEngine.core.graphics.texture;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
+import loreEngine.core.graphics.shader.Shader;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 

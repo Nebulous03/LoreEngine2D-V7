@@ -1,4 +1,4 @@
-package loreEngine.core.graphics;
+package loreEngine.core.graphics.camera;
 
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;

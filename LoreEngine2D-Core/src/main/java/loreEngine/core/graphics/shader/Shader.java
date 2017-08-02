@@ -1,4 +1,4 @@
-package loreEngine.core.graphics;
+package loreEngine.core.graphics.shader;
 
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.*;

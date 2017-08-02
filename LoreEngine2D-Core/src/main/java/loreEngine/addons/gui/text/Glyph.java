@@ -1,4 +1,4 @@
-package loreEngine.addons.text;
+package loreEngine.addons.gui.text;
 
 import java.util.HashMap;
 

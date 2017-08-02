@@ -1,4 +1,7 @@
-package loreEngine.core.graphics;
+package loreEngine.core.graphics.renderer;
+
+import loreEngine.core.graphics.camera.Camera;
+import loreEngine.core.graphics.shader.Shader;
 
 public abstract class Renderer {
 	

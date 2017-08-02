@@ -1,4 +1,4 @@
-package loreEngine.core.graphics.renderers;
+package loreEngine.core.graphics.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -7,12 +7,10 @@ import static org.lwjgl.opengl.GL30.*;
 import java.nio.ByteOrder;
 import java.util.Stack;
 
-import loreEngine.core.graphics.BatchRenderer;
-import loreEngine.core.graphics.Camera;
-import loreEngine.core.graphics.Mesh;
-import loreEngine.core.graphics.Renderable;
-import loreEngine.core.graphics.Shader;
-import loreEngine.core.graphics.Texture;
+import loreEngine.core.graphics.camera.Camera;
+import loreEngine.core.graphics.shader.Shader;
+import loreEngine.core.graphics.texture.Texture;
+import loreEngine.core.graphics.vertex.Mesh;
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;
 import loreEngine.utils.Log;

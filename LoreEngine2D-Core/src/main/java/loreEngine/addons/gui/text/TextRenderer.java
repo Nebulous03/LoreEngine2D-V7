@@ -1,4 +1,4 @@
-package loreEngine.core.graphics.renderers;
+package loreEngine.addons.gui.text;
 
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
@@ -14,11 +14,9 @@ import java.nio.ByteOrder;
 
 import org.lwjgl.opengl.GL11;
 
-import loreEngine.addons.text.Glyph;
-import loreEngine.addons.text.Text;
-import loreEngine.core.graphics.BatchRenderer;
-import loreEngine.core.graphics.Camera;
-import loreEngine.core.graphics.Shader;
+import loreEngine.core.graphics.camera.Camera;
+import loreEngine.core.graphics.renderer.BatchRenderer;
+import loreEngine.core.graphics.shader.Shader;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 

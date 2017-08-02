@@ -1,4 +1,4 @@
-package loreEngine.core.graphics.renderers;
+package loreEngine.core.graphics.renderer;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
@@ -6,10 +6,8 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 
 import org.lwjgl.opengl.GL20;
 
-import loreEngine.core.graphics.Camera;
-import loreEngine.core.graphics.Renderable;
-import loreEngine.core.graphics.Renderer;
-import loreEngine.core.graphics.Shader;
+import loreEngine.core.graphics.camera.Camera;
+import loreEngine.core.graphics.shader.Shader;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 
