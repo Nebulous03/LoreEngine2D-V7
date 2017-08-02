@@ -19,4 +19,7 @@ public abstract class Renderer {
 		this.shader = shader;
 	}
 
+	public void delete() {
+		
+	}
 }

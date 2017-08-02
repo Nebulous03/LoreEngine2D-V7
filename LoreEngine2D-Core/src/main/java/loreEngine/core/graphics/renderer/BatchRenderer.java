@@ -16,6 +16,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryUtil;
 
 import loreEngine.core.graphics.camera.Camera;
@@ -101,6 +102,15 @@ public abstract class BatchRenderer extends Renderer{
 
 	public boolean isDrawing() {
 		return drawing;
+	}
+	
+	@Override
+	public void delete() {
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GL15.glDeleteBuffers(batchVAO);
+		GL15.glDeleteBuffers(batchVBO);
+		GL15.glDeleteBuffers(batchIBO);
 	}
 	
 }
