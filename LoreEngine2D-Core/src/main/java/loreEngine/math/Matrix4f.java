@@ -145,6 +145,12 @@ public class Matrix4f {
 	public Vector3f getPosVec3f() {
 		return new Vector3f(elements[0 + 3 * 4], elements[1 + 3 * 4], elements[2 + 3 * 4]);
 	}
+	
+	public void storePosVec3f(Vector3f vector) {
+		vector.x = elements[0 + 3 * 4];
+		vector.y = elements[1 + 3 * 4];
+		vector.z = elements[2 + 3 * 4];
+	}
 
 	public Vector3f getRotVec3f() {
 		return new Vector3f(elements[0 + 3 * 4], elements[1 + 3 * 4], elements[2 + 3 * 4]); // WRONG!!!

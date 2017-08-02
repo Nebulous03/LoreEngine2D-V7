@@ -6,7 +6,7 @@ import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.Renderable;
 import loreEngine.core.graphics.Shader;
 
-public class TextRenderer extends BatchRenderer {
+public class TextRenderer extends BasicBatchRenderer {
 	
 	private Font font;
 
@@ -22,6 +22,14 @@ public class TextRenderer extends BatchRenderer {
 	@Override
 	public void push(Renderable renderable) {
 		super.push(renderable);
+	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
 	}
 
 }

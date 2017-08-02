@@ -16,7 +16,7 @@ import loreEngine.core.graphics.Texture.Filter;
 import loreEngine.core.graphics.Texture.Wrap;
 import loreEngine.core.graphics.Window;
 import loreEngine.core.graphics.renderers.BasicRenderer;
-import loreEngine.core.graphics.renderers.BatchRenderer;
+import loreEngine.core.graphics.renderers.BasicBatchRenderer;
 import loreEngine.core.logic.Input;
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;
@@ -27,7 +27,7 @@ import loreEngine.utils.LogLevel;
 public class Sandbox extends Game {
 	
 	private BasicRenderer basicRenderer;
-	private BatchRenderer batchRenderer;
+	private BasicBatchRenderer batchRenderer;
 	private Texture texture;
 	private Renderable test;
 	private Shader shader;
@@ -52,7 +52,7 @@ public class Sandbox extends Game {
 		test = new Renderable(Mesh.Plane(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), texture, Color.CYAN);
 
 		basicRenderer = new BasicRenderer();
-		batchRenderer = new BatchRenderer(texture, camera, shader);
+		batchRenderer = new BasicBatchRenderer(texture, camera, shader);
 		
 		Font arial = new Font("/fonts/arial.fnt", "/fonts/arial.png");
 		
@@ -98,6 +98,7 @@ public class Sandbox extends Game {
 	}
 	
 	boolean useBatch = true;
+	Matrix4f translation = Matrix4f.Translation(new Vector3f(0, 0, 0));
 	
 	@Override
 	public void render() {
@@ -108,7 +109,11 @@ public class Sandbox extends Game {
 
 			for(int y = 0; y < BATCH_GRID; y++) {
 				for(int x = 0; x < BATCH_GRID; x++) {
-					batchRenderer.pushTransform(Matrix4f.Translation(new Vector3f(x, y, 0)));
+					
+					translation.getElements()[0 + 3 * 4] = x;
+					translation.getElements()[1 + 3 * 4] = y;
+					
+					batchRenderer.pushTransform(translation);
 					batchRenderer.push(test);
 					batchRenderer.popTransform();
 				}
@@ -120,7 +125,11 @@ public class Sandbox extends Game {
 			
 			for(int y = 0; y < BATCH_GRID; y++) {
 				for(int x = 0; x < BATCH_GRID; x++) {
-					basicRenderer.render(test.setTranslation(Matrix4f.Translation(new Vector3f(x, y, 0))), camera, shader);
+					
+					translation.getElements()[0 + 3 * 4] = x;
+					translation.getElements()[1 + 3 * 4] = y;
+					
+					basicRenderer.render(test.setTranslation(translation), camera, shader);
 				}
 			}
 			

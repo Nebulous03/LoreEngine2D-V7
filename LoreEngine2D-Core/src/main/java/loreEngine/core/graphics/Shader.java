@@ -114,6 +114,7 @@ public class Shader {
 		FloatBuffer elements = MemoryUtil.memAllocFloat(value.getElements().length);
 		elements.put(value.getElements()).flip();
 		glUniformMatrix4fv(glGetUniformLocation(program, uniform), false, elements);
+		MemoryUtil.memFree(elements);
 	}
 	
 	public void bind() {

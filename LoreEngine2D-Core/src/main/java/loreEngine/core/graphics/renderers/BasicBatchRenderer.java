@@ -2,20 +2,15 @@ package loreEngine.core.graphics.renderers;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.Stack;
 
-import org.lwjgl.system.MemoryUtil;
-
+import loreEngine.core.graphics.BatchRenderer;
 import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.Mesh;
 import loreEngine.core.graphics.Renderable;
-import loreEngine.core.graphics.Renderer;
 import loreEngine.core.graphics.Shader;
 import loreEngine.core.graphics.Texture;
 import loreEngine.math.Matrix4f;
@@ -23,79 +18,22 @@ import loreEngine.math.Vector3f;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 
-public class BatchRenderer extends Renderer {
-	
+public class BasicBatchRenderer extends BatchRenderer {
+
 	private static final int MAX_RENDERABLES  = 65535;
 	private static final int VERTEX_DATA_SIZE = (3 + 4 + 2) * Float.BYTES;
 	private static final int MAX_INDICES_SIZE = MAX_RENDERABLES * 6;
 	private static final int MAX_BUFFER_SIZE  = MAX_INDICES_SIZE * VERTEX_DATA_SIZE;
 	
-	private Stack<Matrix4f> transformStack;
-	private Matrix4f activeTransform;
-
-	private FloatBuffer vertexBuffer;
-	private Texture batchTexture;
+	protected Stack<Matrix4f> transformStack;
+	protected Matrix4f activeTransform;
 	
-	private int batchVAO;
-	private int batchVBO;
-	private int batchIBO;
-	
-	private int indexCount;
-	
-	private boolean drawing;
-	
-	public BatchRenderer(Texture batchTexture, Camera camera, Shader shader) {
-		super(camera, shader);
+	public BasicBatchRenderer(Texture batchTexture, Camera camera, Shader shader) {
+		super(batchTexture, camera, shader);
 		this.transformStack = new Stack<Matrix4f>();
 		this.transformStack.push(Matrix4f.Identity());
 		this.activeTransform = transformStack.peek();
-		this.batchTexture = batchTexture;
-		this.drawing = false;
-		createBatchData();
-	}
-	
-	public void createBatchData() {
-		
-		batchVAO = glGenVertexArrays();
-		glBindVertexArray(batchVAO);
-		
-		batchVBO = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, batchVBO);
-		glBufferData(GL_ARRAY_BUFFER, MAX_BUFFER_SIZE, GL_DYNAMIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, VERTEX_DATA_SIZE, 0);
-		glVertexAttribPointer(1, 4, GL_FLOAT, false, VERTEX_DATA_SIZE, 3 * Float.BYTES);
-		glVertexAttribPointer(2, 2, GL_FLOAT, false, VERTEX_DATA_SIZE, (3 + 4) * Float.BYTES);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-		
-		int[] indices = new int[MAX_INDICES_SIZE];
-		
-		int offset = 0;
-		for(int i = 0; i < MAX_INDICES_SIZE; i += 6) {
-			
-			indices[i + 0] = offset + 0;
-			indices[i + 1] = offset + 1;
-			indices[i + 2] = offset + 2;
-			
-			indices[i + 3] = offset + 2;
-			indices[i + 4] = offset + 3;
-			indices[i + 5] = offset + 0;
-			
-			offset += 4;
-		}
-		
-		IntBuffer indexBuffer = MemoryUtil.memAllocInt(MAX_INDICES_SIZE);
-		indexBuffer.put(indices);
-		indexBuffer.flip();
-		
-		batchIBO = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, batchIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_STATIC_DRAW);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-		
+		super.createBatchData(MAX_BUFFER_SIZE, VERTEX_DATA_SIZE, MAX_INDICES_SIZE);
 	}
 	
 	public void begin() {
@@ -112,7 +50,7 @@ public class BatchRenderer extends Renderer {
 	}
 
 	Mesh mesh = null;
-	Vector3f trans = null;
+	Vector3f trans = new Vector3f(0, 0, 0);
 	
 	public void push(Renderable renderable) {	//TODO: Make dynamically
 		
@@ -122,7 +60,8 @@ public class BatchRenderer extends Renderer {
 		}
 		
 		mesh = renderable.getMesh();
-		trans = activeTransform.getPosVec3f();
+
+		activeTransform.storePosVec3f(trans);
 		
 		vertexBuffer.put(mesh.vertices[0] + trans.x).put(mesh.vertices[1] + trans.y).put(mesh.vertices[2] + trans.z);
 		vertexBuffer.put(mesh.colors[0]).put(mesh.colors[1]).put(mesh.colors[2]).put(mesh.colors[3]);
@@ -191,18 +130,6 @@ public class BatchRenderer extends Renderer {
 		
 		vertexBuffer.clear();
 		indexCount = 0;
-	}
-	
-	public int getBatchVAO() {
-		return batchVAO;
-	}
-
-	public int getBatchVBO() {
-		return batchVBO;
-	}
-
-	public boolean isDrawing() {
-		return drawing;
 	}
 
 }
