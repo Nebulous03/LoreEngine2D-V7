@@ -3,6 +3,7 @@ package sandbox;
 import java.text.DecimalFormat;
 
 import loreEngine.Info;
+import loreEngine.addons.text.Font;
 import loreEngine.core.Game;
 import loreEngine.core.graphics.Camera;
 import loreEngine.core.graphics.DisplayType;
@@ -20,7 +21,8 @@ import loreEngine.math.Vector3f;
 
 public class Sandbox extends Game {
 	
-	private Renderer renderer;
+	private Renderer basicRenderer;
+	//private Renderer textRenderer;
 	private Texture texture;
 	private Renderable test;
 	private Shader shader;
@@ -33,13 +35,16 @@ public class Sandbox extends Game {
 	@Override
 	public void init() {
 		
-		renderer = new BasicRenderer();
+		basicRenderer = new BasicRenderer();
+		//textRenderer = new TextRenderer();
 		texture = new Texture("/textures/unknown.png", Wrap.REPEAT, Filter.NEAREST);
 		test = new Renderable(Mesh.Plane(), new Vector3f(0, 0, 0f), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), texture);
 		shader = new Shader("/shaders/default.vs", "/shaders/default.fs");
 		
 		camera = new Camera(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), Camera.CAMERA_PERSPECTIVE, window.getWidth(), window.getHeight(), 90.0f);
 		camera.move(new Vector3f(0, 0, 1.0f), 1.0f);
+		
+		Font arial = new Font("/fonts/arial.fnt", "/fonts/arial.png");
 		
 	}
 
@@ -83,7 +88,7 @@ public class Sandbox extends Game {
 
 	@Override
 	public void render() {
-		renderer.render(test, camera, shader);
+		basicRenderer.render(test, camera, shader);
 	}
 	
 	public static void main(String[] args) {

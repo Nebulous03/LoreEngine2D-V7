@@ -12,6 +12,8 @@ public class Renderable {
 	private Matrix4f rotation;
 	private Matrix4f scale;
 	
+	protected Renderable() {}
+	
 	public Renderable(Mesh mesh, Vector3f pos, Vector3f rot, Vector3f scale, Texture texture) {
 		this.mesh = mesh;
 		this.translation = Matrix4f.Translation(pos);
