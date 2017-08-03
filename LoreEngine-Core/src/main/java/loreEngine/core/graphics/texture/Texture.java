@@ -22,6 +22,7 @@ public class Texture {
 	public enum Wrap {
 		REPEAT(GL_REPEAT),
 		MIRRORED_REPEAT(GL_MIRRORED_REPEAT),
+		CLAMP(GL_CLAMP),
 		CLAMP_TO_EDGE(GL_CLAMP_TO_EDGE),
 		CLAMP_TO_BOARDER(GL_CLAMP_TO_BORDER);
 		
@@ -50,7 +51,7 @@ public class Texture {
 	private Filter filter;
 	
 	public Texture(String file) {
-		this(file, Wrap.REPEAT, Filter.LINEAR);
+		this(file, Wrap.CLAMP, Filter.NEAREST);
 	}
 	
 	public Texture(String file, Wrap wrap, Filter filter) {
@@ -85,7 +86,7 @@ public class Texture {
 
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
-					int pixel = pixels[y * width + x];
+					int pixel = pixels[x + y * width];
 					pixelBuffer.put((byte) ((pixel >> 16) & 0xFF)); // RED
 					pixelBuffer.put((byte) ((pixel >> 8) & 0xFF)); // GREEN
 					pixelBuffer.put((byte) ((pixel >> 0) & 0xFF)); // BLUE
@@ -98,12 +99,12 @@ public class Texture {
 
 			int id = glGenTextures();
 			glBindTexture(GL_TEXTURE_2D, id);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
 
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelBuffer);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelBuffer);
 
 			if(successful)
 			Log.logln(LogLevel.INFO, "Texture successfully created: " + filename + " (id:" + id + ")");

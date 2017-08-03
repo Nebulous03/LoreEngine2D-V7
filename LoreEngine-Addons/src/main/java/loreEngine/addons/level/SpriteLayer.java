@@ -13,7 +13,7 @@ public class SpriteLayer extends Layer {
 	public ArrayList<Sprite> allSprites;
 
 	public SpriteLayer() {
-		super(RendererManager.getRenderer("default"));
+		super(RendererManager.get("default"));
 	}
 
 	@Override

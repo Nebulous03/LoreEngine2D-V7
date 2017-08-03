@@ -7,6 +7,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
 import loreEngine.utils.Console;
@@ -97,6 +98,15 @@ public class Window {
 		glfwMakeContextCurrent(glWindowID);
 		GL.createCapabilities();
 		
+		glfwSetWindowSizeCallback(glWindowID, new GLFWWindowSizeCallback(){
+			
+            @Override
+            public void invoke(long window, int width, int height){
+            	resize(width, height);
+            }
+            
+        });
+		
 		Log.logln(LogLevel.INFO, "SUCCESS! - GL context created successfully!");
 		
 		glEnable(GL_BLEND);
@@ -127,6 +137,7 @@ public class Window {
 				Log.logln(LogLevel.INFO, "SUCCESS! - GLFW initialized successfully!");
 			
 			glInitialized = true;
+
 		}
 	}
 	
@@ -143,6 +154,7 @@ public class Window {
 		this.width = width;
 		this.height = height;
 		glfwSetWindowSize(glWindowID, width, height);
+		glViewport(0, 0, width, height);
 		return this;
 	}
 	

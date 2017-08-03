@@ -9,7 +9,7 @@ public class TileMapLayer extends Layer {
 	private TileMap map;
 	
 	public TileMapLayer(TileMap map) {
-		super(RendererManager.getRenderer("tileRenderer"));
+		super(RendererManager.get("tileRenderer"));
 		this.map = map;
 	}
 

@@ -12,8 +12,12 @@ import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 
 public class BasicRenderer extends Renderer {
+	
+	public BasicRenderer(Camera camera, Shader shader) {
+		super(camera, shader);
+	}
 
-	public void render(Renderable renderable, Camera camera, Shader shader) {
+	public void render(Renderable renderable) {
 		
 		if(renderable.getMesh() == null){
 			Log.logln(LogLevel.DEBUG, "Renderable was passed into renderer with null mesh");

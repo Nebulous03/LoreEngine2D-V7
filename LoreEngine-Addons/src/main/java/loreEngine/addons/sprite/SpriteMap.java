@@ -1,35 +1,40 @@
 package loreEngine.addons.sprite;
 
+import loreEngine.addons.tileMap.TileSprite;
 import loreEngine.core.graphics.texture.Texture;
 
 public class SpriteMap {
 	
+	private int width;
+	private int height;
+	
 	private Texture mapTexture;
 	private int spriteSize;
 	
-	private Sprite[] sprites;
+	private TileSprite[] sprites;
 
 	public SpriteMap(Texture mapTexture, int spriteSize) {
 		this.mapTexture = mapTexture;
+		this.spriteSize = spriteSize;
 	}
 	
-	public Sprite[] generateSpriteArray(Texture texture, int spriteSize) {
+	public TileSprite[] generateSpriteArray(Texture texture, int spriteSize) {
 		
-		int width  = texture.getWidth();
-		int height = texture.getHeight();
+		width  = texture.getWidth();
+		height = texture.getHeight();
 		
-		sprites = new Sprite[width * height];
+		sprites = new TileSprite[width * height];
 		
 		for(int y = 0; y < height / spriteSize; y += spriteSize) {
 			for(int x = 0; x < width / spriteSize; x += spriteSize) {
-				sprites[x + y * width] = new Sprite(spriteSize, x, y);
+				sprites[x + y * width] = new TileSprite(x + y * width, spriteSize, x, y);
 			}
 		}
 		
 		return null;
 	}
 
-	public Texture getMapTexture() {
+	public Texture getTexture() {
 		return mapTexture;
 	}
 
@@ -37,8 +42,16 @@ public class SpriteMap {
 		return spriteSize;
 	}
 
-	public Sprite[] getSprites() {
+	public TileSprite[] getSprites() {
 		return sprites;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 	
 }

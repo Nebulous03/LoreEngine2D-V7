@@ -1,18 +1,25 @@
 package loreEngine.core.graphics.renderer;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_WRITE_ONLY;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL15.glMapBuffer;
+import static org.lwjgl.opengl.GL15.glUnmapBuffer;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -22,6 +29,9 @@ import org.lwjgl.system.MemoryUtil;
 import loreEngine.core.graphics.camera.Camera;
 import loreEngine.core.graphics.shader.Shader;
 import loreEngine.core.graphics.texture.Texture;
+import loreEngine.math.Matrix4f;
+import loreEngine.utils.Log;
+import loreEngine.utils.LogLevel;
 
 public abstract class BatchRenderer extends Renderer{
 
@@ -86,6 +96,83 @@ public abstract class BatchRenderer extends Renderer{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		
+	}
+
+	public void addToVBO(float[] vertices, float[] colors, float offsetX, float offsetY, float offsetZ, float texPosX, float texPosY, float texWidth, float texHeight) {
+		
+		if(vertexBuffer.remaining() == 0) {
+			Log.logln(LogLevel.DEBUG, "Batch Renderer buffer overflow; flushing and starting new batch.");
+			flush();
+		}
+		
+		vertexBuffer.put(vertices[0] + offsetX).put(vertices[1] + offsetY).put(vertices[2] + offsetZ);
+		vertexBuffer.put(colors[0]).put(colors[1]).put(colors[2]).put(colors[3]);
+		vertexBuffer.put(texPosX).put(texPosY);
+		
+		vertexBuffer.put(vertices[3] + offsetX).put(vertices[4] + offsetY).put(vertices[5] + offsetZ);
+		vertexBuffer.put(colors[4]).put(colors[5]).put(colors[6]).put(colors[7]);
+		vertexBuffer.put(texPosX).put(texPosY + texHeight);
+		
+		vertexBuffer.put(vertices[6] + offsetX).put(vertices[7] + offsetY).put(vertices[8] + offsetZ);
+		vertexBuffer.put(colors[8]).put(colors[9]).put(colors[10]).put(colors[11]);
+		vertexBuffer.put(texPosX + texWidth).put(texPosY + texHeight);
+		
+		vertexBuffer.put(vertices[9] + offsetX).put(vertices[10] + offsetY).put(vertices[11] + offsetZ);
+		vertexBuffer.put(colors[12]).put(colors[13]).put(colors[14]).put(colors[15]);
+		vertexBuffer.put(texPosX + texWidth).put(texPosY);
+		
+		indexCount += 6;
+		
+	}
+	
+	public void begin() {
+		
+		if(drawing){
+			Log.logln(LogLevel.WARNING, "Attempted to begin batch, but the batch is already drawing.");
+			return;
+		}
+		
+		glBindVertexArray(batchVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, batchVBO);
+		vertexBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		drawing = true;
+	}
+	
+	public void end() {
+		
+		if(!drawing){
+			Log.logln(LogLevel.WARNING, "Attempted to end batch, but the batch is not drawing.");
+			return;
+		}
+		
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+		flush();
+		vertexBuffer.clear();
+		glBindVertexArray(0);
+		drawing = false;
+		
+	}
+	
+	public void flush() {
+		
+		shader.bind();
+		
+		if(batchTexture != null) batchTexture.bind(shader, "vTexture");
+		
+		shader.setUniform("projection", camera.getProjectionMatrix());
+		shader.setUniform("view", camera.getViewMatrix());
+		shader.setUniform("transform", Matrix4f.Identity());
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, batchIBO);
+		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		
+		if(batchTexture != null) batchTexture.unbind();
+		
+		shader.unbind();
+		
+		vertexBuffer.clear();
+		indexCount = 0;
 	}
 	
 	public int getBatchVAO() {

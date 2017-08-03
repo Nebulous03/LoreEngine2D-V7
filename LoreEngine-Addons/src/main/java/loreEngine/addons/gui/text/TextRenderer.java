@@ -4,13 +4,9 @@ import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_WRITE_ONLY;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glMapBuffer;
 import static org.lwjgl.opengl.GL15.glUnmapBuffer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
-
-import java.nio.ByteOrder;
 
 import org.lwjgl.opengl.GL11;
 
@@ -106,19 +102,6 @@ public class TextRenderer extends BatchRenderer {
 		
 		indexCount += 6;
 		
-	}
-	
-	private void begin() {
-		
-		if(drawing){
-			Log.logln(LogLevel.WARNING, "Attempted to begin batch, but the batch is already drawing.");
-			return;
-		}
-		
-		glBindVertexArray(batchVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, batchVBO);
-		vertexBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY).order(ByteOrder.nativeOrder()).asFloatBuffer();
-		drawing = true;
 	}
 	
 	private void end(Text text) {

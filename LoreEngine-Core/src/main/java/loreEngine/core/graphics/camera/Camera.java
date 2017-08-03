@@ -1,5 +1,6 @@
 package loreEngine.core.graphics.camera;
 
+import loreEngine.core.graphics.Window;
 import loreEngine.math.Matrix4f;
 import loreEngine.math.Vector3f;
 
@@ -11,11 +12,7 @@ public class Camera {
 	private static float near = 0.0001f;
 	private static float far  = 1000.0f;
 	
-	private Matrix4f projection;
 	private short projectionType;
-	
-	private float width;
-	private float height;
 	
 	private float fov;
 	
@@ -25,12 +22,13 @@ public class Camera {
 	private Matrix4f translation;
 	private Matrix4f rotation;
 	
-	public Camera(Vector3f pos, Vector3f rot, short projection, float width, float height, float fov) {
+	private Window window;
+	
+	public Camera(Window window, Vector3f pos, Vector3f rot, short projection, float fov) {
+		this.window = window;
 		this.pos = pos.mul(-1.0f);
 		this.rot = rot;
 		this.projectionType = projection;
-		this.width = width;
-		this.height = height;
 		this.fov = fov;
 		this.setProjection(projection);
 		this.translation = Matrix4f.Translation(pos);
@@ -58,7 +56,6 @@ public class Camera {
 		if (rot.z <= -360.0f) rot.z += 360.0f;
 
 		rotation = Matrix4f.Rotation(rot);
-		//updateVectors();
 		return this;
 	}
 	
@@ -66,12 +63,24 @@ public class Camera {
 		return (Matrix4f.Identity()).mul(rotation).mul(translation);
 	}
 
+	public Matrix4f getProjectionMatrix() {
+		switch (projectionType)
+		{
+		case CAMERA_ORTOGRAPHIC:
+			return Matrix4f.Orthographic(0, window.getWidth(), window.getHeight(), 0, near, -far);
+		case CAMERA_PERSPECTIVE:
+			return Matrix4f.Perspective(fov, (float)window.getWidth() / (float)window.getHeight(), near, far);
+		default:
+			return null;	
+		}
+	}
+	
 	public float getWidth() {
-		return width;
+		return window.getWidth();
 	}
 
 	public float getHeight() {
-		return height;
+		return window.getHeight();
 	}
 	
 	public Vector3f getPosition() {
@@ -111,36 +120,13 @@ public class Camera {
 		setProjection(projectionType);
 		return this;
 	}
-	
-	public Camera resize(float width, float height) {
-		this.width = width;
-		this.height = height;
-		setProjection(projectionType);
-		return this;
-	}
-	
-	public Matrix4f getProjectionMatrix() {
-		return projection;
-	}
-	
+
 	public short getProjectionType() {
 		return projectionType;
 	}
 
 	public Camera setProjection(short projectionType) {
 		this.projectionType = projectionType;
-		switch (projectionType)
-		{
-		case CAMERA_ORTOGRAPHIC:
-			this.projection = Matrix4f.Orthographic(0, width, height, 0, near, -far);
-			break;
-		case CAMERA_PERSPECTIVE:
-			this.projection = Matrix4f.Perspective(fov, width / height, near, far);
-			break;
-		default:
-			this.projection = Matrix4f.Orthographic(0, width, height, 0, near, -far);
-			break;
-		}
 		return this;
 	}
 	

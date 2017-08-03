@@ -1,10 +1,5 @@
 package loreEngine.core.graphics.renderer;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL30.*;
-
-import java.nio.ByteOrder;
 import java.util.Stack;
 
 import loreEngine.core.graphics.camera.Camera;
@@ -32,19 +27,6 @@ public class BasicBatchRenderer extends BatchRenderer {
 		this.transformStack.push(Matrix4f.Identity());
 		this.activeTransform = transformStack.peek();
 		super.createBatchData(MAX_BUFFER_SIZE, VERTEX_DATA_SIZE, MAX_INDICES_SIZE);
-	}
-	
-	public void begin() {
-		
-		if(drawing){
-			Log.logln(LogLevel.WARNING, "Attempted to begin batch, but the batch is already drawing.");
-			return;
-		}
-		
-		glBindVertexArray(batchVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, batchVBO);
-		vertexBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY).order(ByteOrder.nativeOrder()).asFloatBuffer();
-		drawing = true;
 	}
 
 	Mesh mesh = null;
@@ -89,45 +71,6 @@ public class BasicBatchRenderer extends BatchRenderer {
 	public void popTransform() {
 		if(transformStack.size() > 1) transformStack.pop();
 		activeTransform = transformStack.peek();
-	}
-	
-	public void end() {
-		
-		if(!drawing){
-			Log.logln(LogLevel.WARNING, "Attempted to end batch, but the batch is not drawing.");
-			return;
-		}
-		
-		glUnmapBuffer(GL_ARRAY_BUFFER);
-		flush();
-		vertexBuffer.clear();
-		glBindVertexArray(0);
-		drawing = false;
-		
-		transformStack.clear();
-		transformStack.push(Matrix4f.Identity());
-	}
-	
-	public void flush() {
-		
-		shader.bind();
-		
-		batchTexture.bind(shader, "vTexture");
-		
-		shader.setUniform("projection", camera.getProjectionMatrix());
-		shader.setUniform("view", camera.getViewMatrix());
-		shader.setUniform("transform", Matrix4f.Identity());
-		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, batchIBO);
-		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		
-		batchTexture.unbind();
-		
-		shader.unbind();
-		
-		vertexBuffer.clear();
-		indexCount = 0;
 	}
 
 }
