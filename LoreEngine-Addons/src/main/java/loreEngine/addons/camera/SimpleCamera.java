@@ -1,4 +1,4 @@
-package loreEngine.addons;
+package loreEngine.addons.camera;
 
 import loreEngine.core.graphics.camera.Camera;
 import loreEngine.math.Vector3f;

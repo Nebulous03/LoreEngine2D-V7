@@ -1,0 +1,4 @@
+rootProject.name = 'LoreEngine-Addons'
+
+include ':LoreEngine-Core'
+project(':LoreEngine-Core').projectDir = new File(settingsDir, '../LoreEngine-Core')
