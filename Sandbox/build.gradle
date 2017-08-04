@@ -23,7 +23,6 @@ repositories {
 
 dependencies {
 	compile project(":LoreEngine-Core");
-	compile project(":LoreEngine-Addons");
 }
 
 mainClassName = "sandbox.Sandbox"
