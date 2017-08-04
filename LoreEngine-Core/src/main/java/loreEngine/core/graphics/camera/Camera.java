@@ -26,7 +26,7 @@ public class Camera {
 	
 	public Camera(Window window, Vector3f pos, Vector3f rot, short projection, float fov) {
 		this.window = window;
-		this.pos = pos.mul(-1.0f);
+		this.pos = pos;
 		this.rot = rot;
 		this.projectionType = projection;
 		this.fov = fov;
@@ -36,9 +36,9 @@ public class Camera {
 	}
 	
 	public Camera move(Vector3f direction, float speed) {
-		Vector3f temp = direction; temp.mul(speed);
+		Vector3f temp = direction; temp.mul(-speed);
 		pos.sub(temp);
-		translation = Matrix4f.Translation(pos);
+		translation = Matrix4f.Translation(new Vector3f(-pos.x, -pos.y, pos.z));
 		return this;
 	}
 	

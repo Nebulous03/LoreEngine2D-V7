@@ -14,18 +14,18 @@ public class Sprite extends Renderable {
 		super(Mesh.Plane(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), texture, Color.WHITE);
 	}
 	
-	public Sprite move(int deltaX, int deltaY) {
-		super.getTransformMatrix().mul(Matrix4f.Translation(new Vector3f(deltaX, deltaY, 0)));	//TODO: Speed this up!!!
+	public Sprite move(float deltaX, float deltaY) {
+		super.translation.mul(Matrix4f.Translation(new Vector3f(deltaX, deltaY, 0)));	//TODO: Speed this up!!!
 		return this;
 	}
 	
 	public Sprite rotate(int rotX) {
-		super.getTransformMatrix().mul(Matrix4f.Rotation(new Vector3f(rotX, 0, 0)));	//TODO: Speed this up!!!
+		super.rotation.mul(Matrix4f.Rotation(new Vector3f(rotX, 0, 0)));	//TODO: Speed this up!!!
 		return this;
 	}
 	
 	public Sprite scale(int scale) {
-		super.getTransformMatrix().mul(Matrix4f.Scale(new Vector3f(scale, scale, 0)));	//TODO: Speed this up!!!
+		super.scale.mul(Matrix4f.Scale(new Vector3f(scale, scale, 0)));	//TODO: Speed this up!!!
 		return this;
 	}
 	

@@ -42,9 +42,13 @@ import loreEngine.utils.LogLevel;
 public class Sandbox extends Game {
 	
 	private Camera camera;
+	private Camera guiCamera;
 	private TileMap map;
 	
 	private Sprite player;
+	
+	private Text fpsText;
+	private Text cameraPosText;
 	
 	public Sandbox(Window window) {
 		super(window);
@@ -54,6 +58,8 @@ public class Sandbox extends Game {
 	public void init() {
 		
 		Log.setGlobalLogLevel(LogLevel.INFO);
+		
+		setTPS(10);
 		
 		SpriteMapManager.init();
 		TextureManager.init();
@@ -65,14 +71,16 @@ public class Sandbox extends Game {
 		TextureManager.register("testMap", new Texture("/textures/testSpriteMap.png"));
 		TextureManager.register("minecraft", new Texture("/textures/minecraft.png"));
 		TextureManager.register("arial", new Texture("/fonts/arial.png"));
-		TextureManager.register("comicSans", new Texture("/fonts/comicSansMs.png"));
+		TextureManager.register("comicSans", new Texture("/fonts/comicSansMS.png"));
 		
 		ShaderManager.register("default", new Shader("/shaders/default.vs", "/shaders/default.fs"));
 		
-		camera = new SimpleCamera(window, 0, 0, 10.0f);
+		camera = new SimpleCamera(window, 0, 0, -10.0f);
+		guiCamera = new SimpleCamera(window, 0, 0, -20.0f);
 		
 		RendererManager.register("spriteRenderer", new SpriteRenderer(camera, ShaderManager.get("default")));
 		RendererManager.register("tileMapRenderer", new TileMapRenderer(camera, ShaderManager.get("default")));
+		RendererManager.register("textRenderer", new TextRenderer(guiCamera, ShaderManager.get("default")));
 		
 		SpriteMapManager.register("testMap", new SpriteMap(TextureManager.get("testMap"), 16));
 		SpriteMapManager.register("minecraftMap", new SpriteMap(TextureManager.get("minecraft"), 16));
@@ -84,8 +92,14 @@ public class Sandbox extends Game {
 		Tile GRASS	= new Tile(3,0);
 		Tile PLANK	= new Tile(4,0);
 
-		map = new TileMap(SpriteMapManager.get("minecraftMap"), 32, 32).populate(STONE);
+		map = new TileMap(SpriteMapManager.get("minecraftMap"), 1024, 1024).enableCulling(true).populate(STONE);
 		map.set(3, 3, PLANK);
+		
+		fpsText = new Text(new Font("/fonts/comicSansMS.fnt", TextureManager.get("comicSans")), 50, new Vector3f(0,0,0), Color.WHITE, "FPS: " + getActiveFPS());
+		fpsText.setTranslation(Matrix4f.Translation(new Vector3f(-35, 20, 0)));
+		
+		cameraPosText = new Text(new Font("/fonts/comicSansMS.fnt", TextureManager.get("comicSans")), 60, new Vector3f(0,0,0), Color.WHITE, "Camera:");
+		cameraPosText.setTranslation(Matrix4f.Translation(new Vector3f(-35, 18.5f, 0)));
 		
 	}
 
@@ -94,23 +108,29 @@ public class Sandbox extends Game {
 		
 	}
 	
+	private float moveSpeed = 5.0f;
+	
 	@Override
 	public void update(float delta) {
 		
 		if(Input.isKeyHeld(Input.KEY_W)) {
-			camera.move(new Vector3f(0, 1, 0), 5.0f * delta);
+			camera.move(new Vector3f(0, 1, 0), moveSpeed * delta);
+			player.move(0, moveSpeed * delta);
 		}
 		
 		if(Input.isKeyHeld(Input.KEY_S)) {
-			camera.move(new Vector3f(0, -1, 0), 5.0f * delta);
+			camera.move(new Vector3f(0, -1, 0), moveSpeed * delta);
+			player.move(0, -moveSpeed * delta);
 		}
 		
 		if(Input.isKeyHeld(Input.KEY_A)) {
-			camera.move(new Vector3f(-1, 0, 0), 5.0f * delta);
+			camera.move(new Vector3f(-1, 0, 0), moveSpeed * delta);
+			player.move(-moveSpeed * delta, 0);
 		}
 		
 		if(Input.isKeyHeld(Input.KEY_D)) {
-			camera.move(new Vector3f(1, 0, 0), 5.0f * delta);
+			camera.move(new Vector3f(1, 0, 0), moveSpeed * delta);
+			player.move(moveSpeed * delta, 0);
 		}
 		
 	}
@@ -120,7 +140,8 @@ public class Sandbox extends Game {
 	@Override
 	public void tick(int tick, int tock) {
 		window.setTitle("Sandbox - LoreEngine " + Info.VERSION + " | FPS: " + getActiveFPS()+ " | MS: " + df.format(getActiveMS()));
-		//text.setText("FPS: " + getActiveFPS());
+		fpsText.setText("FPS: " + getActiveFPS());
+		cameraPosText.setText("Camera: " + camera.getPosition().x + ", " + camera.getPosition().y);
 	}
 
 	@Override
@@ -132,6 +153,8 @@ public class Sandbox extends Game {
 	public void render() {
 		((TileMapRenderer)RendererManager.get("tileMapRenderer")).render(map);
 		((SpriteRenderer)RendererManager.get("spriteRenderer")).render(player);
+		((TextRenderer)RendererManager.get("textRenderer")).render(fpsText);
+		((TextRenderer)RendererManager.get("textRenderer")).render(cameraPosText);
 	}
 	
 	public static void main(String[] args) {
