@@ -2,6 +2,3 @@ rootProject.name = 'Sandbox'
 
 include ':LoreEngine-Core'
 project(':LoreEngine-Core').projectDir = new File(settingsDir, '../LoreEngine-Core')
-
-include ':LoreEngine-Addons'
-project(':LoreEngine-Addons').projectDir = new File(settingsDir, '../LoreEngine-Addons')

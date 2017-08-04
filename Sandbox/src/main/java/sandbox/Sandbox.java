@@ -70,8 +70,8 @@ public class Sandbox extends Game {
 		TextureManager.register("crate", new Texture("/textures/crate.png"));
 		TextureManager.register("testMap", new Texture("/textures/testSpriteMap.png"));
 		TextureManager.register("minecraft", new Texture("/textures/minecraft.png"));
-		TextureManager.register("arial", new Texture("/fonts/arial.png"));
-		TextureManager.register("comicSans", new Texture("/fonts/comicSansMS.png"));
+		TextureManager.register("arial", new Texture("/fonts/Arial.png"));
+		TextureManager.register("comicSans", new Texture("/fonts/ComicSansMS.png"));
 		
 		ShaderManager.register("default", new Shader("/shaders/default.vs", "/shaders/default.fs"));
 		
@@ -95,10 +95,10 @@ public class Sandbox extends Game {
 		map = new TileMap(SpriteMapManager.get("minecraftMap"), 1024, 1024).enableCulling(true).populate(STONE);
 		map.set(3, 3, PLANK);
 		
-		fpsText = new Text(new Font("/fonts/comicSansMS.fnt", TextureManager.get("comicSans")), 50, new Vector3f(0,0,0), Color.WHITE, "FPS: " + getActiveFPS());
+		fpsText = new Text(new Font("/fonts/ComicSansMS.fnt", TextureManager.get("comicSans")), 50, new Vector3f(0,0,0), Color.WHITE, "FPS: " + getActiveFPS());
 		fpsText.setTranslation(Matrix4f.Translation(new Vector3f(-35, 20, 0)));
 		
-		cameraPosText = new Text(new Font("/fonts/comicSansMS.fnt", TextureManager.get("comicSans")), 60, new Vector3f(0,0,0), Color.WHITE, "Camera:");
+		cameraPosText = new Text(new Font("/fonts/ComicSansMS.fnt", TextureManager.get("comicSans")), 60, new Vector3f(0,0,0), Color.WHITE, "Camera:");
 		cameraPosText.setTranslation(Matrix4f.Translation(new Vector3f(-35, 18.5f, 0)));
 		
 	}
