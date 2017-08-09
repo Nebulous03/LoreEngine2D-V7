@@ -59,7 +59,7 @@ public class Sandbox extends Game {
 		
 		Log.setGlobalLogLevel(LogLevel.INFO);
 		
-		setTPS(10);
+		setTPS(20);
 		
 		SpriteMapManager.init();
 		TextureManager.init();
@@ -92,7 +92,7 @@ public class Sandbox extends Game {
 		Tile GRASS	= new Tile(3,0);
 		Tile PLANK	= new Tile(4,0);
 
-		map = new TileMap(SpriteMapManager.get("minecraftMap"), 1024, 1024).enableCulling(true).populate(STONE);
+		map = new TileMap(SpriteMapManager.get("minecraftMap"), 128, 128).enableCulling(true).setCullSize(48, 32).populate(STONE);
 		map.set(3, 3, PLANK);
 		
 		fpsText = new Text(new Font("/fonts/ComicSansMS.fnt", TextureManager.get("comicSans")), 50, new Vector3f(0,0,0), Color.WHITE, "FPS: " + getActiveFPS());
@@ -109,6 +109,8 @@ public class Sandbox extends Game {
 	}
 	
 	private float moveSpeed = 5.0f;
+	private float scrollSpeed = 0.0005f;
+	float scrollVelocity = 0;
 	
 	@Override
 	public void update(float delta) {
@@ -133,6 +135,23 @@ public class Sandbox extends Game {
 			player.move(moveSpeed * delta, 0);
 		}
 		
+		if(Input.isMouseScrollIncrease()){ 
+			scrollVelocity = 60;
+		}
+		
+		if(Input.isMouseScrollDecrease()){
+			scrollVelocity = -60;
+		}
+		
+		if(scrollVelocity > 0) {
+			camera.move(new Vector3f(0, 0, 1), scrollSpeed * scrollVelocity);
+			scrollVelocity -= 1;
+		}
+		
+		if(scrollVelocity < 0) {
+			camera.move(new Vector3f(0, 0, 1), scrollSpeed * scrollVelocity);
+			scrollVelocity += 1;
+		}
 	}
 	
 	DecimalFormat df = new DecimalFormat("0.00000"); 
@@ -141,7 +160,7 @@ public class Sandbox extends Game {
 	public void tick(int tick, int tock) {
 		window.setTitle("Sandbox - LoreEngine " + Info.VERSION + " | FPS: " + getActiveFPS()+ " | MS: " + df.format(getActiveMS()));
 		fpsText.setText("FPS: " + getActiveFPS());
-		cameraPosText.setText("Camera: " + camera.getPosition().x + ", " + camera.getPosition().y);
+		cameraPosText.setText("Camera: " + camera.getPosition().x + ", " + camera.getPosition().y + ", " + camera.getPosition().z);
 	}
 
 	@Override

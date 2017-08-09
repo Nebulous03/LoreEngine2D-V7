@@ -46,6 +46,8 @@ public abstract class BatchRenderer extends Renderer{
 	
 	protected boolean drawing;
 	
+	protected int vertexDataSize;
+	
 	protected BatchRenderer() {}
 	
 	public BatchRenderer(Texture batchTexture, Camera camera, Shader shader) {
@@ -55,6 +57,8 @@ public abstract class BatchRenderer extends Renderer{
 	}
 	
 	public void createBatchData(int maxBufferSize, int vertexDataSize, int maxIndicesSize) {
+		
+		this.vertexDataSize = vertexDataSize;
 		
 		batchVAO = glGenVertexArrays();
 		glBindVertexArray(batchVAO);
@@ -100,8 +104,8 @@ public abstract class BatchRenderer extends Renderer{
 
 	public void addToVBO(float[] vertices, float[] colors, float offsetX, float offsetY, float offsetZ, float texPosX, float texPosY, float texWidth, float texHeight) {
 		
-		if(vertexBuffer.remaining() == 0) {
-			Log.logln(LogLevel.DEBUG, "Batch Renderer buffer overflow; flushing and starting new batch.");
+		if(vertexBuffer.remaining() <= vertexDataSize) {
+			Log.logln(LogLevel.INFO, "Batch Renderer buffer overflow; flushing and starting new batch.");
 			flush();
 		}
 		
@@ -134,6 +138,7 @@ public abstract class BatchRenderer extends Renderer{
 		
 		glBindVertexArray(batchVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, batchVBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, batchIBO);
 		vertexBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY).order(ByteOrder.nativeOrder()).asFloatBuffer();
 		drawing = true;
 	}
@@ -148,6 +153,8 @@ public abstract class BatchRenderer extends Renderer{
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		flush();
 		vertexBuffer.clear();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		drawing = false;
 		
@@ -163,9 +170,7 @@ public abstract class BatchRenderer extends Renderer{
 		shader.setUniform("view", camera.getViewMatrix());
 		shader.setUniform("transform", Matrix4f.Identity());
 		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, batchIBO);
 		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		
 		if(batchTexture != null) batchTexture.unbind();
 		
