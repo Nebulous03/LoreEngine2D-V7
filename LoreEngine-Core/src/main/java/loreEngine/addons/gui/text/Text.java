@@ -3,9 +3,9 @@ package loreEngine.addons.gui.text;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import lore.math.Matrix4f;
+import lore.math.Vector3f;
 import loreEngine.core.graphics.renderer.Renderable;
-import loreEngine.math.Matrix4f;
-import loreEngine.math.Vector3f;
 
 public class Text extends Renderable {
 	

@@ -2,10 +2,10 @@ package loreEngine.core.graphics.renderer;
 
 import java.awt.Color;
 
+import lore.math.Matrix4f;
+import lore.math.Vector3f;
 import loreEngine.core.graphics.texture.Texture;
 import loreEngine.core.graphics.vertex.Mesh;
-import loreEngine.math.Matrix4f;
-import loreEngine.math.Vector3f;
 
 public class Renderable {
 	

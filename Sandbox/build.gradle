@@ -32,10 +32,12 @@ project.ext.lwjglVersion = "3.1.2"
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
 	compile project(":LoreEngine-Core");
+	compile 'com.github.NebulousDev:LoreMathLib:1.0.2b'
 }
 
 shadowJar {

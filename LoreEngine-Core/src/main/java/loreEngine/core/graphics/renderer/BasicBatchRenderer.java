@@ -2,12 +2,12 @@ package loreEngine.core.graphics.renderer;
 
 import java.util.Stack;
 
+import lore.math.Matrix4f;
+import lore.math.Vector3f;
 import loreEngine.core.graphics.camera.Camera;
 import loreEngine.core.graphics.shader.Shader;
 import loreEngine.core.graphics.texture.Texture;
 import loreEngine.core.graphics.vertex.Mesh;
-import loreEngine.math.Matrix4f;
-import loreEngine.math.Vector3f;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 

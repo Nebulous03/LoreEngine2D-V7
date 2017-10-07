@@ -1,8 +1,8 @@
 package loreEngine.addons.camera;
 
+import lore.math.Vector3f;
 import loreEngine.core.graphics.Window;
 import loreEngine.core.graphics.camera.Camera;
-import loreEngine.math.Vector3f;
 
 public class SimpleCamera extends Camera{
 	

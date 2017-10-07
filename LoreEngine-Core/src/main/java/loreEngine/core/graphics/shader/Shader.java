@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 import org.lwjgl.system.MemoryUtil;
 
-import loreEngine.math.Matrix4f;
-import loreEngine.math.Vector3f;
+import lore.math.Matrix4f;
+import lore.math.Vector3f;
 
 public class Shader {
 	

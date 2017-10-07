@@ -1,8 +1,8 @@
 package loreEngine.core.graphics.camera;
 
+import lore.math.Matrix4f;
+import lore.math.Vector3f;
 import loreEngine.core.graphics.Window;
-import loreEngine.math.Matrix4f;
-import loreEngine.math.Vector3f;
 
 public class Camera {
 
@@ -36,14 +36,20 @@ public class Camera {
 	}
 	
 	public Camera move(Vector3f direction, float speed) {
-		Vector3f temp = direction; temp.mul(-speed);
+		Vector3f temp = direction; 
+		temp.x *= -speed;
+		temp.y *= -speed;
+		temp.z *= -speed;
 		pos.sub(temp);
 		translation = Matrix4f.Translation(new Vector3f(-pos.x, -pos.y, pos.z));
 		return this;
 	}
 	
 	public Camera rotate(Vector3f axis, float angle) {
-		Vector3f temp = axis; temp.mul(angle);
+		Vector3f temp = axis;
+		temp.x *= angle;
+		temp.y *= angle;
+		temp.z *= angle;
 		rot.add(temp);
 
 		if (rot.x >= 360.0f) rot.x -= 360.0f;

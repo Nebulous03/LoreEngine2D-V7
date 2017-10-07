@@ -1,8 +1,8 @@
 package loreEngine.core.graphics.vertex;
 
-import loreEngine.math.Vector2f;
-import loreEngine.math.Vector3f;
-import loreEngine.math.Vector4f;
+import lore.math.Vector2f;
+import lore.math.Vector3f;
+import lore.math.Vector4f;
 
 public class VertexData {
 	
@@ -17,7 +17,7 @@ public class VertexData {
 	}
 	
 	public int getSize() {
-		return Vector3f.getSize() + Vector4f.getSize() + Vector2f.getSize();
+		return Vector3f.SIZE + Vector4f.SIZE + Vector2f.SIZE;
 	}
 
 }

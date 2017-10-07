@@ -26,10 +26,10 @@ import java.nio.IntBuffer;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryUtil;
 
+import lore.math.Matrix4f;
 import loreEngine.core.graphics.camera.Camera;
 import loreEngine.core.graphics.shader.Shader;
 import loreEngine.core.graphics.texture.Texture;
-import loreEngine.math.Matrix4f;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 
