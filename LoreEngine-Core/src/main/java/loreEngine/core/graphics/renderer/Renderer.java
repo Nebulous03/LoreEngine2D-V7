@@ -5,19 +5,9 @@ import loreEngine.core.graphics.shader.Shader;
 
 public abstract class Renderer {
 	
-	protected Camera camera;
-	protected Shader shader;
-	
 	protected Renderer() {}
 	
-	public Renderer(Camera camera, Shader shader) {
-		init(camera, shader);
-	}
-	
-	public void init(Camera camera, Shader shader) {
-		this.camera = camera;
-		this.shader = shader;
-	}
+	public abstract void render(Renderable renderable, Camera camera, Shader shader);
 
 	public void delete() {
 		

@@ -33,7 +33,10 @@ import loreEngine.core.graphics.texture.Texture;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 
-public abstract class BatchRenderer extends Renderer{
+public abstract class BatchRenderer extends Renderer {
+	
+	protected Camera camera;
+	protected Shader shader;
 
 	protected FloatBuffer vertexBuffer;
 	protected Texture batchTexture;
@@ -51,7 +54,8 @@ public abstract class BatchRenderer extends Renderer{
 	protected BatchRenderer() {}
 	
 	public BatchRenderer(Texture batchTexture, Camera camera, Shader shader) {
-		super(camera, shader);
+		this.camera = camera;
+		this.shader = shader;
 		this.batchTexture = batchTexture;
 		this.drawing = false;
 	}

@@ -13,11 +13,8 @@ import loreEngine.utils.LogLevel;
 
 public class BasicRenderer extends Renderer {
 	
-	public BasicRenderer(Camera camera, Shader shader) {
-		super(camera, shader);
-	}
-
-	public void render(Renderable renderable) {
+	@Override
+	public void render(Renderable renderable, Camera camera, Shader shader) {
 		
 		if(renderable.getMesh() == null){
 			Log.logln(LogLevel.DEBUG, "Renderable was passed into renderer with null mesh");
@@ -50,5 +47,6 @@ public class BasicRenderer extends Renderer {
 		
 		shader.unbind();
 	}
+
 
 }

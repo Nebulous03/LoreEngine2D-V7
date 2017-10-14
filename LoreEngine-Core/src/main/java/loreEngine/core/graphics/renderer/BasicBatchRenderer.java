@@ -73,4 +73,9 @@ public class BasicBatchRenderer extends BatchRenderer {
 		activeTransform = transformStack.peek();
 	}
 
+	@Override
+	public void render(Renderable renderable, Camera camera, Shader shader) {
+		
+	}
+
 }

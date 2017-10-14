@@ -1,11 +1,15 @@
 package loreEngine.core;
 
+import java.util.HashMap;
+
 import org.lwjgl.glfw.GLFW;
 
 import loreEngine.Info;
 import loreEngine.core.graphics.DisplayType;
 import loreEngine.core.graphics.Window;
+import loreEngine.core.graphics.layer.Scene;
 import loreEngine.core.logic.Input;
+import loreEngine.core.logic.SceneManager;
 import loreEngine.utils.Log;
 import loreEngine.utils.LogLevel;
 import loreEngine.utils.Time;
@@ -30,14 +34,22 @@ public abstract class Game {
 	
 	protected GameStatus status;
 	
+	protected SceneManager sceneManager;
+	
 	public Game() {
 		this.window = Window.createWindow("LoreEngine2D - Test", 640, 480, DisplayType.WINDOWED, true);
+		initManagers();
 		Info.printOpener(this);
 	}
 	
 	public Game(Window window) {
 		this.window = window;
+		initManagers();
 		Info.printOpener(this);
+	}
+	
+	private void initManagers() {
+		new SceneManager();
 	}
 
 	public void start() {
@@ -112,11 +124,13 @@ public abstract class Game {
 			
 			if(!fpsCapped) {
 				window.clear();
+				SceneManager.getActiveScene().render();
 				render();
 				frames++;				
 			} else {
 				if(frames < fps) {
 					window.clear();
+					SceneManager.getActiveScene().render();
 					render();
 					frames++;	
 				}
